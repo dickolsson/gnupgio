@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Default variables
+EDITOR=${EDITOR-"nano"}
+FILE=$1
+usage="Usage: $0 [FILE]"
+
+# Handle options
+while getopts "h" opt; do
+  case "$opt" in
+    h) echo $usage && exit;;
+  esac
+done
+
+# Validate input
+[ -z $FILE ] && echo $usage && exit
+
+# Include helper functions
+. /usr/local/lib/gnupgio/ramfs.sh
+
+# Create a RAM file system
+fs=$(mkramfs)
+
+# Ensure tight umask for any temporary file created below
+umask 077
+
+# If the input file exists, decrypt to a temporary file
+if [ -f $FILE ]; then
+  gpg --output $fs/decrypted --decrypt $FILE
+
+# Make sure the output file has the asc extention
+elif [ "${FILE##*.}" != "asc" ]; then
+  FILE="$FILE.asc"
+fi
+
+# Let the user update the file
+$EDITOR $fs/decrypted
+
+# Overwrite the encrypted file with normal umask
+umask 0022
+gpg --output $FILE --encrypt --armor $fs/decrypted
+
+# Destroy the RAM file system
+rmramfs $fs
+exit $?

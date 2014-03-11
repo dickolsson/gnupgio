@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Default variables
+FILE=$1
+usage="Usage: $0 [FILE]"
+
+# Handle options
+while getopts "h" opt; do
+  case "$opt" in
+    h) echo $usage && exit;;
+  esac
+done
+
+# Validate input
+[ -z $FILE ] && echo $usage && exit;
+[ ! -f $FILE ] && echo "$0: $FILE: No such file" && exit
+
+read -p "Are you sure you want to shred $FILE? (y/N) " a
+[ "$a" = "y" ] && shred -uz $FILE
+exit $?
