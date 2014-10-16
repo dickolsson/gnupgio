@@ -31,7 +31,7 @@ sudo apt-get install gnupg make
 Clone the Git repository and use the `make` utility to install:
 
 ```sh
-git clone [URL] gnupgio
+git clone https://github.com/dickolsson/gnupgio.git gnupgio
 cd gnupgio
 sudo make install
 ```
