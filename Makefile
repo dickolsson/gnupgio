@@ -32,7 +32,7 @@ clean:
 all: $(BUILD_FILE) $(SIG_FILE)
 
 tag:
-	git tag v$(VERSION)
+	git tag $(VERSION)
 	git push --tags
 
 release: $(BUILD_FILE) $(SIG_FILE) tag
