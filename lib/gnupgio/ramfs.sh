@@ -11,9 +11,10 @@ mkramfs() {
   if [ "$(uname)" = "Linux" ]; then
     sudo mount -t ramfs -o mode=777 ramfs $mnt
   elif [ "$(uname)" = "Darwin" ]; then
+    # Create a RAM disk.
     ramfs_size_sectors=$((10*1024*1024/512))
     ramdisk_dev=`hdid -nomount ram://${ramfs_size_sectors}`
-
+    # Create a file system on the RAM disk and mount it.
     newfs_hfs -v 'ram disk' ${ramdisk_dev} > /dev/null 2>&1
     mount -o noatime -t hfs ${ramdisk_dev} ${mnt}
   fi
