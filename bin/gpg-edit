@@ -29,8 +29,8 @@ if [ -f $FILE ]; then
   gpg --output $fs/decrypted --decrypt $FILE
 
 # Make sure the output file has the asc extention
-elif [ "${FILE##*.}" != "asc" ]; then
-  FILE="$FILE.asc"
+elif [ "${FILE##*.}" != "gpg" ]; then
+  FILE="$FILE.gpg"
 fi
 
 # Let the user update the file
