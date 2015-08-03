@@ -28,7 +28,7 @@ umask 077
 if [ -f $FILE ]; then
   gpg --output $fs/decrypted --decrypt $FILE
 
-# Make sure the output file has the asc extention
+# Make sure the output file has the gpg extension
 elif [ "${FILE##*.}" != "gpg" ]; then
   FILE="$FILE.gpg"
 fi
